@@ -89,6 +89,9 @@ const Texts = styled.div`
     font-size: 1.2rem;
     padding-bottom: 1.2rem;
     text-transform: capitalize;
+    @media (max-width:428px){
+      font-size:0.8rem;
+    }
   }
   p {
     font-weight: 300;

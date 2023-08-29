@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,21 +24,23 @@ const Header = () => {
     <Nav className={isScrolled ? 'scrolled' : ''}>
       {isScrolled && (
         <Logo>
-       
-          <h1> </h1>
+          <h1>Logo</h1>
         </Logo>
       )}
       <NavLinks>
-        <a href='#home'>Home</a>
-        <a href='#service'>Our Services</a>
-        <a href='#client'>About Us</a>
-        <a href='#footer'>Contact Us</a>
+        <DropdownButton onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+          <span>&#9776;</span>
+        </DropdownButton>
+        <NavLinksList isOpen={isDropdownOpen}>
+          <NavItem href='#home'>Home</NavItem>
+          <NavItem href='#service'>Our Services</NavItem>
+          <NavItem href='#client'>About Us</NavItem>
+          <NavItem href='#footer'>Contact Us</NavItem>
+        </NavLinksList>
       </NavLinks>
     </Nav>
   );
 };
-
-export default Header;
 
 const Nav = styled.nav`
   position: fixed;
@@ -52,13 +54,11 @@ const Nav = styled.nav`
   transition: background-color 0.3s;
   z-index: 1;
   &.scrolled {
-    background-color: #000; /* Change to the desired background color */
+    background-color: #000;
   }
 `;
 
 const Logo = styled.div`
-
-  
   span {
     font-size: 1.8rem;
     display: flex;
@@ -71,21 +71,62 @@ const Logo = styled.div`
   h1 {
     font-weight: 600;
     font-size: 1.2rem;
-    display: none; /* Hide the text for the circular logo */
+    display: none;
   }
 `;
-
 
 const NavLinks = styled.div`
   display: flex;
   gap: 2rem;
-  a {
-    color: #fff;
-    text-decoration: none;
-    transition: opacity 0.3s ease-in-out;
-    font-family: 'Orbitron', sans-serif;
-    :hover {
-      color:#993399;
+`;
+
+const DropdownButton = styled.div`
+  display: none;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    display: flex;
+   
+    span {
+      font-size: 2rem;
     }
   }
 `;
+
+const NavLinksList = styled.div`
+  display: flex;
+  gap: 3rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+    position: absolute;
+    top: 80%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 1);
+    width: 100%;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 1);
+    z-index: 2;
+    a {
+      color: #FFF;
+      text-decoration: none;
+      transition: opacity 0.3s ease-in-out;
+      font-family: 'Orbitron', sans-serif;
+      :hover {
+        color: #993399;
+      }
+    }
+  }
+`;
+
+const NavItem = styled.a`
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease-in-out;
+  font-family: 'Orbitron', sans-serif;
+  :hover {
+    color: #993399;
+  }
+`;
+
+export default Header;
